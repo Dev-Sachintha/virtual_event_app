@@ -12,7 +12,20 @@
           "package_name": "com.example.virtual_event_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "740893431159-eopd9up1akglc989nfvu3b97l3cffnr3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.virtual_event_app",
+            "certificate_hash": "0fb4709eb155db14e6ef396c84a382a016b81bff"
+          }
+        },
+        {
+          "client_id": "740893431159-crmfnua3i5ev10pighu6lo8ptc7bp8d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAmgARMwjNdwuBMv3zjQ3MQUtfHQxq5GEM"
@@ -20,7 +33,63 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740893431159-crmfnua3i5ev10pighu6lo8ptc7bp8d3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "740893431159-2butg9oi3sobmi7f6v67pgokv9i5vjgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.virtualevent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740893431159:android:76c685c77841239107bd72",
+        "android_client_info": {
+          "package_name": "com.example.virtual_event_hub_new"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740893431159-sfsmp9g7i8svcq1iev0nu9c3pd1uja3b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.virtual_event_hub_new",
+            "certificate_hash": "0fb4709eb155db14e6ef396c84a382a016b81bff"
+          }
+        },
+        {
+          "client_id": "740893431159-crmfnua3i5ev10pighu6lo8ptc7bp8d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmgARMwjNdwuBMv3zjQ3MQUtfHQxq5GEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740893431159-crmfnua3i5ev10pighu6lo8ptc7bp8d3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "740893431159-2butg9oi3sobmi7f6v67pgokv9i5vjgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.virtualevent"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +100,20 @@
           "package_name": "com.example.virtualevent"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "740893431159-kmhp845jjrsid6tfhng6ldagdiql62js.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.virtualevent",
+            "certificate_hash": "0fb4709eb155db14e6ef396c84a382a016b81bff"
+          }
+        },
+        {
+          "client_id": "740893431159-crmfnua3i5ev10pighu6lo8ptc7bp8d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAmgARMwjNdwuBMv3zjQ3MQUtfHQxq5GEM"
@@ -39,7 +121,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740893431159-crmfnua3i5ev10pighu6lo8ptc7bp8d3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "740893431159-2butg9oi3sobmi7f6v67pgokv9i5vjgu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.virtualevent"
+              }
+            }
+          ]
         }
       }
     }

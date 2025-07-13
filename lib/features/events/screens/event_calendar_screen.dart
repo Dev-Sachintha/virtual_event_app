@@ -1,10 +1,15 @@
+// lib/features/events/screens/event_calendar_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:virtual_event_app/core/providers/auth_provider.dart';
+// --- FIX: Corrected import path from 'package.' to 'package:' ---
+import 'package:virtual_event_app/core/widgets/loading_indicator.dart';
 import 'package:virtual_event_app/features/events/models/event_model.dart';
 import 'package:virtual_event_app/features/events/providers/event_provider.dart';
+import 'package:virtual_event_app/features/events/widgets/event_card.dart';
 
 class EventCalendarScreen extends StatefulWidget {
   const EventCalendarScreen({super.key});
@@ -14,18 +19,20 @@ class EventCalendarScreen extends StatefulWidget {
 }
 
 class _EventCalendarScreenState extends State<EventCalendarScreen> {
+  // ... state variables are correct ...
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
   @override
   void initState() {
     super.initState();
-    // Fetch events when the screen loads
+    _selectedDay = _focusedDay;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<EventProvider>().fetchEvents();
     });
   }
 
+  // ... build method and other logic are correct ...
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
@@ -43,8 +50,14 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
               tooltip: 'Create Event',
             ),
           IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.go('/settings'),
+            tooltip: 'Settings',
+          ),
+          IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () => context.read<AuthProvider>().logout(),
+            tooltip: 'Logout',
           ),
         ],
       ),
@@ -71,9 +84,9 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
                     right: 1,
                     bottom: 1,
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.blue,
+                        color: Colors.blue.shade700,
                       ),
                       width: 16.0,
                       height: 16.0,
@@ -93,8 +106,9 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
           ),
           const SizedBox(height: 8.0),
           Expanded(
+            // --- FIX: LoadingIndicator is now a recognized class ---
             child: eventProvider.isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? const LoadingIndicator()
                 : _buildEventList(eventProvider),
           ),
         ],
@@ -105,23 +119,12 @@ class _EventCalendarScreenState extends State<EventCalendarScreen> {
   Widget _buildEventList(EventProvider eventProvider) {
     final events = eventProvider.getEventsForDay(_selectedDay ?? _focusedDay);
     if (events.isEmpty) {
-      return const Center(child: Text("No events for this day."));
+      return const Center(child: Text("No events scheduled for this day."));
     }
     return ListView.builder(
       itemCount: events.length,
       itemBuilder: (context, index) {
-        final event = events[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: ListTile(
-            title: Text(event.title),
-            subtitle: Text(event.description),
-            trailing: event.isLive
-                ? const Chip(label: Text('LIVE'), backgroundColor: Colors.red)
-                : null,
-            onTap: () => context.go('/event/${event.id}'),
-          ),
-        );
+        return EventCard(event: events[index]);
       },
     );
   }

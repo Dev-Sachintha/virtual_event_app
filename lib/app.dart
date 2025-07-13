@@ -5,14 +5,17 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:virtual_event_app/core/config/app_theme.dart';
 import 'package:virtual_event_app/core/providers/auth_provider.dart';
+import 'package:virtual_event_app/features/admin/screens/create_event_screen.dart';
 import 'package:virtual_event_app/features/auth/screens/forgot_password_screen.dart';
 import 'package:virtual_event_app/features/auth/screens/login_screen.dart';
+import 'package:virtual_event_app/features/auth/screens/settings_screen.dart';
 import 'package:virtual_event_app/features/auth/screens/sign_up_screen.dart';
 import 'package:virtual_event_app/features/auth/screens/splash_screen.dart';
+import 'package:virtual_event_app/features/auth/screens/two_fa_setup_screen.dart';
+import 'package:virtual_event_app/features/auth/screens/two_fa_verify_screen.dart';
 import 'package:virtual_event_app/features/events/screens/event_calendar_screen.dart';
 import 'package:virtual_event_app/features/events/screens/event_detail_screen.dart';
 import 'package:virtual_event_app/features/session/screens/live_session_screen.dart';
-import 'package:virtual_event_app/features/admin/screens/create_event_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -31,6 +34,21 @@ class App extends StatelessWidget {
         GoRoute(
             path: '/forgot-password',
             builder: (_, __) => const ForgotPasswordScreen()),
+        GoRoute(path: '/settings', builder: (_, __) => const SettingsScreen()),
+        GoRoute(
+          path: '/setup-2fa',
+          builder: (context, state) =>
+              TwoFactorSetupScreen(secretKey: state.extra as String),
+        ),
+        GoRoute(
+            path: '/verify-2fa',
+            builder: (context, state) {
+              final params = state.extra as Map<String, String>;
+              return TwoFactorVerifyScreen(
+                email: params['email']!,
+                password: params['password']!,
+              );
+            }),
         GoRoute(path: '/home', builder: (_, __) => const EventCalendarScreen()),
         GoRoute(
             path: '/event/:eventId',
@@ -47,34 +65,40 @@ class App extends StatelessWidget {
           builder: (context, state) => const CreateEventScreen(),
         ),
       ],
+      // --- THIS IS THE FINAL FIX: A more robust redirection logic ---
       redirect: (BuildContext context, GoRouterState state) {
         final authStatus = authProvider.status;
         final location = state.matchedLocation;
 
+        // While the auth state is being determined, always show the splash screen.
         if (authStatus == AuthStatus.unknown) {
           return '/splash';
         }
 
         final isLoggedIn = authStatus == AuthStatus.authenticated;
+
         final isAuthRoute = location == '/login' ||
             location == '/signup' ||
-            location == '/forgot-password';
+            location == '/forgot-password' ||
+            location == '/verify-2fa';
 
-        // If the user is logged in and they are trying to access an authentication
-        // route (or the splash screen), redirect them to the home screen.
-        if (isLoggedIn && (isAuthRoute || location == '/splash')) {
-          return '/home';
+        // --- Case 1: User is Logged In ---
+        if (isLoggedIn) {
+          // If they are on the splash screen or any auth screen, send them home.
+          if (location == '/splash' || isAuthRoute) {
+            return '/home';
+          }
+        }
+        // --- Case 2: User is Logged Out ---
+        else {
+          // If they are anywhere BUT an authentication route, send them to the login page.
+          // This correctly handles redirecting from '/splash' to '/login'.
+          if (!isAuthRoute) {
+            return '/login';
+          }
         }
 
-        // --- THIS IS THE FIX ---
-        // If the user is NOT logged in and they are trying to access any page
-        // that is NOT an authentication route, redirect them to the login screen.
-        // This correctly handles redirecting from the splash screen.
-        if (!isLoggedIn && !isAuthRoute) {
-          return '/login';
-        }
-
-        // No redirect needed.
+        // If none of the above conditions are met, no redirect is needed.
         return null;
       },
     );
